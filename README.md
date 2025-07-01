@@ -1,73 +1,84 @@
-# Welcome to your Lovable project
+# 배포된 링크 바로가기
+[바로가기](https://seven-day-bloom.lovable.app/)
 
-## Project info
+# 📌 서비스명  
+## **Day7**  
+7일 동안 작지만 의미 있는 미션을 팀과 함께 수행하며, 스스로를 변화시키는 감성 챌린지 플랫폼
 
-**URL**: https://lovable.dev/projects/3d967d94-5395-465e-8bb3-0495bd9aeffc
+---
 
-## How can I edit this code?
+# ❤️ 서비스 핵심 가치관 (Core Values)
 
-There are several ways of editing your application.
+- **작은 성취의 힘** – 매일 아주 작은 행동이 모여 큰 변화를 만든다.  
+- **함께 성장하기** – 혼자보다는 함께 할 때 지속된다.  
+- **감정의 기록** – 행동뿐 아니라 감정의 변화도 함께 저장된다.  
+- **정직한 연결** – 경쟁보다 공감, 피드백보다 응원이 우선이다.  
+- **짧고 완전한 루틴** – 7일이라는 짧고 명확한 단위로 완결성 있는 성장 경험 제공
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/3d967d94-5395-465e-8bb3-0495bd9aeffc) and start prompting.
+# 👤 사용자 정의 (Target Users)
 
-Changes made via Lovable will be committed automatically to this repo.
+- 10대 후반~20대 초반의 청소년 및 청년  
+- 감정 기복이 심하고 혼자 자기계발을 지속하기 어려운 사람  
+- SNS 피로감은 있지만, 연결감은 필요로 하는 사람  
+- 공부, 자기관리, 감정 정리 등 작은 실천을 하고 싶은 사람  
+- “자존감 회복” 혹은 “작은 성공 경험”을 원하는 사람
 
-**Use your preferred IDE**
+---
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+# 🔍 사용자 니즈 (User Needs)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- 혼자서는 자기관리를 오래 지속하지 못함  
+- SNS처럼 가볍게, 하지만 감정적으로 깊은 연결을 원함  
+- 작은 변화라도 뭔가를 '완수했다'는 느낌이 필요함  
+- 익명성 또는 심리적 안전 하에 감정 표현을 하고 싶음  
+- 의미 있는 기록을 남기고 돌아볼 수 있기를 바람
 
-Follow these steps:
+---
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# 👥 페르소나 (Persona)
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 🎓 유진 (17세, 고등학생)  
+- **특징**: 내성적이고 감수성이 풍부하지만 자기표현은 서툼  
+- **목표**: 스스로를 잘 이해하고, 꾸준한 습관을 만들고 싶음  
+- **문제점**: 혼자서는 글쓰기나 일기 습관을 며칠 이상 유지하지 못함  
+- **기대**: Day7을 통해 혼자가 아니라는 느낌을 받고 싶음. 7일간 작은 도전을 완수해보고 싶다.
 
-# Step 3: Install the necessary dependencies.
-npm i
+### 💡 민수 (21세, 대학생)  
+- **특징**: 다양한 시도에 관심 많고 챌린지를 즐기는 성향  
+- **목표**: 루틴화된 삶과 작은 성공의 기록을 남기고 싶음  
+- **문제점**: 동기 부여가 단기적이고 혼자 금방 흥미를 잃음  
+- **기대**: 감정 공유와 미션을 동시에 하는 Day7에서 새로운 사람들과 “가벼운 팀 경험”을 기대함
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+---
 
-**Edit a file directly in GitHub**
+# 🎯 사용자 시나리오
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+유진은 “감사하는 습관” 챌린지를 선택해 월요일에 팀에 합류한다.  
+매일 아침 8시에 도착하는 미션을 받고, 팀원들과 함께 하루의 감사를 짧게 기록한다.  
+서로의 기록에 따뜻한 스티커와 메시지를 주고받으며, 자신의 변화와 팀원들의 생각에 감동을 느낀다.  
+이후 유진은 “감정 글쓰기 챌린지”에 다시 도전하며, 이번엔 친구를 초대한다.
 
-**Use GitHub Codespaces**
+---
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# 🧩 핵심 기능 (Core Features)
 
-## What technologies are used for this project?
+## 1. 7일 챌린지 참여 시스템
+- 매주 새로운 주제의 챌린지 방 개설 (예: 감사하기, 글쓰기, 산책하기 등)  
+- 소규모 팀 자동 매칭 (또는 친구 초대 가능)
 
-This project is built with:
+## 2. 하루 미션 & 감정 기록
+- 매일 아침 1개 미션 도착  
+- 텍스트, 이모지, 사진 등으로 간단한 결과 공유
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 3. 공감 기반 리액션 시스템
+- “좋아요” 대신 감정 리액션 (예: 🌿 평화로웠어요, ☀️ 위로 받았어요 등)
 
-## How can I deploy this project?
+## 4. 팀 성장 게이지 & 디지털 배지
+- 팀 미션 성공률에 따라 게이지 상승  
+- 7일간의 성공 시, 팀 전체 배지 획득
 
-Simply open [Lovable](https://lovable.dev/projects/3d967d94-5395-465e-8bb3-0495bd9aeffc) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## 5. 챌린지 히스토리
+- 나의 모든 챌린지 여정 저장  
+- “내가 쌓아올린 변화”를 한눈에 확인
