@@ -25,8 +25,35 @@ const ChallengeDetail = () => {
     return <div>챌린지를 찾을 수 없습니다.</div>;
   }
 
-  const currentDay = challenge.status === 'in-progress' ? 1 : 0;
-  const progressPercentage = (currentDay / 7) * 100;
+  // 상태에 따른 진행도 계산
+  const getProgressInfo = () => {
+    if (challenge.status === 'completed') {
+      return { currentDay: 7, progressPercentage: 100 };
+    } else if (challenge.status === 'in-progress') {
+      return { currentDay: 1, progressPercentage: (1 / 7) * 100 };
+    } else {
+      return { currentDay: 0, progressPercentage: 0 };
+    }
+  };
+
+  const { currentDay, progressPercentage } = getProgressInfo();
+
+  // 각 일차별 미션 성공 인원 계산
+  const getMissionSuccessCount = (dayIndex: number) => {
+    if (challenge.status !== 'in-progress' && challenge.status !== 'completed') {
+      return { completed: 0, total: challenge.participants.length };
+    }
+    
+    const mission = challenge.dailyMissions[dayIndex];
+    if (!mission) {
+      return { completed: 0, total: challenge.participants.length };
+    }
+    
+    return {
+      completed: mission.submissions.length,
+      total: challenge.participants.length
+    };
+  };
 
   const handleSubmitMission = () => {
     if (!missionText.trim()) {
@@ -113,18 +140,23 @@ const ChallengeDetail = () => {
             <div className="space-y-4">
               <Progress value={progressPercentage} className="w-full h-2" />
               <div className="grid grid-cols-7 gap-2">
-                {Array.from({ length: 7 }, (_, i) => (
-                  <div key={i} className="text-center">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mx-auto mb-2 ${
-                      i < currentDay ? 'bg-green-600 text-white' : 
-                      i === currentDay ? 'bg-blue-600 text-white' : 
-                      'bg-gray-100 text-gray-400'
-                    }`}>
-                      {i + 1}
+                {Array.from({ length: 7 }, (_, i) => {
+                  const { completed, total } = getMissionSuccessCount(i);
+                  return (
+                    <div key={i} className="text-center">
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mx-auto mb-2 ${
+                        i < currentDay ? 'bg-green-600 text-white' : 
+                        i === currentDay && challenge.status === 'in-progress' ? 'bg-blue-600 text-white' : 
+                        'bg-gray-100 text-gray-400'
+                      }`}>
+                        {i + 1}
+                      </div>
+                      <span className="text-xs text-gray-500">
+                        {challenge.status === 'recruiting' ? `${i + 1}일차` : `(${completed}/${total})`}
+                      </span>
                     </div>
-                    <span className="text-xs text-gray-500">{i + 1}일차</span>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </CardContent>
@@ -152,7 +184,7 @@ const ChallengeDetail = () => {
           </CardContent>
         </Card>
 
-        {/* 오늘의 미션 */}
+        {/* 진행중 챌린지: 오늘의 미션 */}
         {challenge.status === 'in-progress' && challenge.dailyMissions[currentDay] && (
           <Card className="border border-gray-100 shadow-sm">
             <CardHeader className="pb-4">
@@ -226,74 +258,86 @@ const ChallengeDetail = () => {
           </Card>
         )}
 
-        {/* 팀원들의 미션 인증 */}
-        {challenge.status === 'in-progress' && challenge.dailyMissions[currentDay]?.submissions.length > 0 && (
-          <Card className="border border-gray-100 shadow-sm">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg text-gray-900">팀원들의 미션 인증</CardTitle>
-            </CardHeader>
-            <CardContent className="pt-0 space-y-6">
-              {challenge.dailyMissions[currentDay].submissions.map((submission, index) => {
-                const user = mockUsers.find(u => u.id === submission.userId);
-                return (
-                  <div key={index} className="border border-gray-100 rounded-lg p-5 space-y-4 bg-white">
-                    <div className="flex items-center gap-3">
-                      <Avatar className="w-10 h-10">
-                        <AvatarFallback className="text-lg">{user?.profileImage}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="font-semibold text-gray-900">{user?.name}</p>
-                        <p className="text-sm text-gray-500">
-                          {new Date(submission.submittedAt).toLocaleString('ko-KR', {
-                            month: 'long',
-                            day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
-                        </p>
-                      </div>
-                    </div>
-                    
-                    {submission.imageUrl && (
-                      <div className="rounded-lg overflow-hidden">
-                        <img 
-                          src={submission.imageUrl} 
-                          alt="미션 인증" 
-                          className="w-full max-w-md rounded-lg object-cover border border-gray-100"
-                        />
-                      </div>
-                    )}
-                    
-                    <p className="text-gray-800 leading-relaxed bg-gray-50 p-3 rounded-lg">{submission.text}</p>
-                    
-                    <div className="flex flex-wrap gap-2 pt-3 border-t border-gray-100">
-                      {reactionTypes.map((reaction) => (
-                        <Button
-                          key={reaction.id}
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleReaction(index, reaction.id)}
-                          className="text-sm hover:bg-blue-50 hover:border-blue-200 border-gray-200 text-gray-700"
-                        >
-                          {reaction.emoji} {reaction.label}
-                        </Button>
-                      ))}
-                    </div>
-                    
-                    {submission.reactions.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-3">
-                        {submission.reactions.map((reaction, i) => (
-                          <Badge key={i} variant="secondary" className="text-sm bg-blue-50 text-blue-700 border-blue-100">
-                            {reactionTypes.find(r => r.id === reaction.type)?.emoji} {reaction.message}
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </CardContent>
-          </Card>
+        {/* 진행중/완료된 챌린지: 팀원들의 미션 인증 */}
+        {(challenge.status === 'in-progress' || challenge.status === 'completed') && (
+          <>
+            {Array.from({ length: challenge.status === 'completed' ? 7 : currentDay + 1 }, (_, dayIndex) => {
+              const mission = challenge.dailyMissions[dayIndex];
+              if (!mission || mission.submissions.length === 0) return null;
+              
+              return (
+                <Card key={dayIndex} className="border border-gray-100 shadow-sm">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-lg text-gray-900">
+                      {dayIndex + 1}일차 미션 인증 ({mission.submissions.length}명 완료)
+                    </CardTitle>
+                    <p className="text-sm text-gray-600 mt-1">{mission.title}</p>
+                  </CardHeader>
+                  <CardContent className="pt-0 space-y-6">
+                    {mission.submissions.map((submission, index) => {
+                      const user = mockUsers.find(u => u.id === submission.userId);
+                      return (
+                        <div key={index} className="border border-gray-100 rounded-lg p-5 space-y-4 bg-white">
+                          <div className="flex items-center gap-3">
+                            <Avatar className="w-10 h-10">
+                              <AvatarFallback className="text-lg">{user?.profileImage}</AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <p className="font-semibold text-gray-900">{user?.name}</p>
+                              <p className="text-sm text-gray-500">
+                                {new Date(submission.submittedAt).toLocaleString('ko-KR', {
+                                  month: 'long',
+                                  day: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                })}
+                              </p>
+                            </div>
+                          </div>
+                          
+                          {submission.imageUrl && (
+                            <div className="rounded-lg overflow-hidden">
+                              <img 
+                                src={submission.imageUrl} 
+                                alt="미션 인증" 
+                                className="w-full max-w-md rounded-lg object-cover border border-gray-100"
+                              />
+                            </div>
+                          )}
+                          
+                          <p className="text-gray-800 leading-relaxed bg-gray-50 p-3 rounded-lg">{submission.text}</p>
+                          
+                          <div className="flex flex-wrap gap-2 pt-3 border-t border-gray-100">
+                            {reactionTypes.map((reaction) => (
+                              <Button
+                                key={reaction.id}
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleReaction(index, reaction.id)}
+                                className="text-sm hover:bg-blue-50 hover:border-blue-200 border-gray-200 text-gray-700"
+                              >
+                                {reaction.emoji} {reaction.label}
+                              </Button>
+                            ))}
+                          </div>
+                          
+                          {submission.reactions.length > 0 && (
+                            <div className="flex flex-wrap gap-2 mt-3">
+                              {submission.reactions.map((reaction, i) => (
+                                <Badge key={i} variant="secondary" className="text-sm bg-blue-50 text-blue-700 border-blue-100">
+                                  {reactionTypes.find(r => r.id === reaction.type)?.emoji} {reaction.message}
+                                </Badge>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </>
         )}
       </main>
     </div>

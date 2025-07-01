@@ -159,7 +159,75 @@ export const mockChallenges: Challenge[] = [
     status: 'completed',
     startDate: '2024-06-10',
     endDate: '2024-06-16',
-    dailyMissions: [],
+    dailyMissions: [
+      {
+        day: 1,
+        title: '오늘의 감정 기록하기',
+        description: '하루 종일 느꼈던 감정을 한 단어로 표현하고, 그 이유를 간단히 적어보세요.',
+        submissions: [
+          {
+            userId: '3',
+            imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop',
+            text: '오늘은 "평온함"이었어요. 아침에 일어나서 창문을 열었을 때 들어온 바람이 너무 시원해서 마음이 차분해졌습니다.',
+            submittedAt: '2024-06-10T21:00:00Z',
+            reactions: [
+              {
+                userId: '4',
+                type: 'great-job',
+                message: '정말 잘했어요!'
+              }
+            ]
+          },
+          {
+            userId: '4',
+            imageUrl: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=400&fit=crop',
+            text: '오늘의 감정은 "설렘"이에요. 새로운 책을 읽기 시작했는데 주인공이 너무 매력적이라서 계속 읽고 싶어졌어요.',
+            submittedAt: '2024-06-10T22:30:00Z',
+            reactions: [
+              {
+                userId: '3',
+                type: 'amazing',
+                message: '정말 멋져요!'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        day: 2,
+        title: '감정의 변화 관찰하기',
+        description: '하루 동안 감정이 어떻게 변했는지 기록해보세요.',
+        submissions: [
+          {
+            userId: '3',
+            imageUrl: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=400&h=400&fit=crop',
+            text: '아침엔 피곤했는데 친구와 통화하고 나니 기분이 좋아졌어요. 사람과의 연결이 이렇게 중요한 걸 느꼈습니다.',
+            submittedAt: '2024-06-11T20:00:00Z',
+            reactions: []
+          }
+        ]
+      },
+      {
+        day: 3,
+        title: '긍정적 감정 찾기',
+        description: '오늘 하루 중 가장 긍정적이었던 순간의 감정을 기록해보세요.',
+        submissions: [
+          {
+            userId: '5',
+            imageUrl: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=400&fit=crop',
+            text: '엄마가 해주신 저녁이 너무 맛있어서 행복했어요. 가족과 함께하는 시간이 얼마나 소중한지 다시 한번 느꼈습니다.',
+            submittedAt: '2024-06-12T19:30:00Z',
+            reactions: [
+              {
+                userId: '3',
+                type: 'cheer-up',
+                message: '응원해요!'
+              }
+            ]
+          }
+        ]
+      }
+    ],
     createdAt: '2024-06-05'
   },
   {
@@ -269,7 +337,102 @@ export const mockChallenges: Challenge[] = [
     status: 'completed',
     startDate: '2024-06-15',
     endDate: '2024-06-21',
-    dailyMissions: [],
+    dailyMissions: [
+      {
+        day: 1,
+        title: '첫 명상 시작하기',
+        description: '10분간 조용한 곳에서 호흡에 집중하며 명상해보세요.',
+        submissions: [
+          {
+            userId: '2',
+            imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop',
+            text: '처음엔 잡념이 많았지만 점점 마음이 차분해지는 걸 느꼈어요. 10분이 이렇게 짧게 느껴질 줄 몰랐네요.',
+            submittedAt: '2024-06-15T07:00:00Z',
+            reactions: [
+              {
+                userId: '3',
+                type: 'great-job',
+                message: '정말 잘했어요!'
+              }
+            ]
+          },
+          {
+            userId: '6',
+            imageUrl: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=400&fit=crop',
+            text: '아침 일찍 일어나서 명상했더니 하루가 더 여유롭게 느껴졌어요. 이 기분 좋은 느낌이 계속되길 바라요.',
+            submittedAt: '2024-06-15T07:30:00Z',
+            reactions: []
+          }
+        ]
+      },
+      {
+        day: 2,
+        title: '감정 관찰 명상',
+        description: '오늘의 감정을 있는 그대로 관찰하며 명상해보세요.',
+        submissions: [
+          {
+            userId: '3',
+            imageUrl: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=400&h=400&fit=crop',
+            text: '스트레스받은 하루였는데 명상을 통해 그 감정을 객관적으로 바라볼 수 있었어요. 마음이 한결 가벼워졌습니다.',
+            submittedAt: '2024-06-16T21:00:00Z',
+            reactions: [
+              {
+                userId: '2',
+                type: 'amazing',
+                message: '정말 멋져요!'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        day: 3,
+        title: '감사 명상',
+        description: '오늘 감사한 일들을 떠올리며 명상해보세요.',
+        submissions: [
+          {
+            userId: '2',
+            imageUrl: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=400&fit=crop',
+            text: '가족, 친구, 건강... 당연하게 여겼던 것들에 대해 감사하는 시간이었어요. 마음이 따뜻해졌습니다.',
+            submittedAt: '2024-06-17T20:00:00Z',
+            reactions: []
+          },
+          {
+            userId: '6',
+            imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=400&fit=crop',
+            text: '오늘 비가 와서 집에서 명상했는데 빗소리가 배경음이 되어 더 집중할 수 있었어요. 자연의 소리가 주는 평화로움을 느꼈어요.',
+            submittedAt: '2024-06-17T19:00:00Z',
+            reactions: [
+              {
+                userId: '2',
+                type: 'keep-going',
+                message: '계속 화이팅!'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        day: 4,
+        title: '자애 명상',
+        description: '자신과 타인에게 사랑과 자비를 보내는 명상을 해보세요.',
+        submissions: [
+          {
+            userId: '3',
+            imageUrl: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=400&h=400&fit=crop',
+            text: '자신을 사랑하는 게 이렇게 어려운 일인지 몰랐어요. 하지만 조금씩 나 자신에게 친절해지는 연습을 해보겠습니다.',
+            submittedAt: '2024-06-18T18:30:00Z',
+            reactions: [
+              {
+                userId: '6',
+                type: 'cheer-up',
+                message: '응원해요!'
+              }
+            ]
+          }
+        ]
+      }
+    ],
     createdAt: '2024-06-12'
   },
   {
