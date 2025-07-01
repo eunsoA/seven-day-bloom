@@ -31,19 +31,19 @@ const ChallengeList = () => {
   const completedChallenges = challenges.filter(c => c.status === 'completed');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+    <div className="min-h-screen bg-gray-50">
       <Header onCreateChallenge={handleCreateChallenge} />
       
       <main className="max-w-6xl mx-auto px-4 py-8">
         <Tabs defaultValue="recruiting" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8 bg-white">
-            <TabsTrigger value="recruiting" className="data-[state=active]:bg-pink-100 data-[state=active]:text-pink-700">
+          <TabsList className="grid w-full grid-cols-3 mb-8 bg-white border border-gray-200">
+            <TabsTrigger value="recruiting" className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700">
               모집중 ({recruitingChallenges.length})
             </TabsTrigger>
-            <TabsTrigger value="in-progress" className="data-[state=active]:bg-green-100 data-[state=active]:text-green-700">
+            <TabsTrigger value="in-progress" className="data-[state=active]:bg-green-50 data-[state=active]:text-green-700">
               진행중 ({inProgressChallenges.length})
             </TabsTrigger>
-            <TabsTrigger value="completed" className="data-[state=active]:bg-gray-100 data-[state=active]:text-gray-700">
+            <TabsTrigger value="completed" className="data-[state=active]:bg-gray-50 data-[state=active]:text-gray-700">
               완료 ({completedChallenges.length})
             </TabsTrigger>
           </TabsList>

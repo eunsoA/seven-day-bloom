@@ -15,13 +15,13 @@ const ChallengeCard = ({ challenge, onJoin, onView }: ChallengeCardProps) => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'recruiting':
-        return 'bg-blue-100 text-blue-800 hover:bg-blue-200';
+        return 'bg-blue-50 text-blue-700 border-blue-200';
       case 'in-progress':
-        return 'bg-green-100 text-green-800 hover:bg-green-200';
+        return 'bg-green-50 text-green-700 border-green-200';
       case 'completed':
-        return 'bg-gray-100 text-gray-800 hover:bg-gray-200';
+        return 'bg-gray-50 text-gray-700 border-gray-200';
       default:
-        return 'bg-gray-100 text-gray-800 hover:bg-gray-200';
+        return 'bg-gray-50 text-gray-700 border-gray-200';
     }
   };
 
@@ -39,10 +39,10 @@ const ChallengeCard = ({ challenge, onJoin, onView }: ChallengeCardProps) => {
   };
 
   return (
-    <Card className="hover:shadow-lg transition-shadow duration-200 border-l-4 border-l-pink-300">
+    <Card className="hover:shadow-lg transition-shadow duration-200 border border-gray-200">
       <CardHeader>
         <div className="flex justify-between items-start">
-          <CardTitle className="text-lg font-semibold text-gray-800 leading-tight">
+          <CardTitle className="text-lg font-semibold text-gray-900 leading-tight">
             {challenge.title}
           </CardTitle>
           <Badge className={getStatusColor(challenge.status)}>
@@ -72,7 +72,7 @@ const ChallengeCard = ({ challenge, onJoin, onView }: ChallengeCardProps) => {
           {challenge.status === 'recruiting' && onJoin && (
             <Button 
               onClick={() => onJoin(challenge.id)}
-              className="flex-1 bg-gradient-to-r from-pink-400 to-purple-500 hover:from-pink-500 hover:to-purple-600 text-white"
+              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
             >
               참여하기
             </Button>
@@ -80,7 +80,7 @@ const ChallengeCard = ({ challenge, onJoin, onView }: ChallengeCardProps) => {
           <Button 
             variant="outline" 
             onClick={() => onView?.(challenge.id)}
-            className="flex-1 border-pink-200 text-pink-600 hover:bg-pink-50"
+            className="flex-1 border-gray-300 text-gray-700 hover:bg-gray-50"
           >
             자세히 보기
           </Button>

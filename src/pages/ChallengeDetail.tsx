@@ -73,8 +73,8 @@ const ChallengeDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
-      <header className="bg-white shadow-sm py-4 px-4">
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white shadow-sm py-4 px-4 border-b border-gray-200">
         <div className="max-w-4xl mx-auto flex items-center gap-4">
           <Button 
             variant="ghost" 
@@ -84,12 +84,12 @@ const ChallengeDetail = () => {
             <ArrowLeft size={20} />
           </Button>
           <div className="flex-1">
-            <h1 className="text-xl font-semibold text-gray-800">{challenge.title}</h1>
+            <h1 className="text-xl font-semibold text-gray-900">{challenge.title}</h1>
             <p className="text-sm text-gray-600">{challenge.description}</p>
           </div>
-          <Badge className={challenge.status === 'recruiting' ? 'bg-blue-100 text-blue-800' : 
-                           challenge.status === 'in-progress' ? 'bg-green-100 text-green-800' : 
-                           'bg-gray-100 text-gray-800'}>
+          <Badge className={challenge.status === 'recruiting' ? 'bg-blue-50 text-blue-700 border-blue-200' : 
+                           challenge.status === 'in-progress' ? 'bg-green-50 text-green-700 border-green-200' : 
+                           'bg-gray-50 text-gray-700 border-gray-200'}>
             {challenge.status === 'recruiting' ? '모집중' : 
              challenge.status === 'in-progress' ? '진행중' : '완료'}
           </Badge>
@@ -98,7 +98,7 @@ const ChallengeDetail = () => {
 
       <main className="max-w-4xl mx-auto px-4 py-8 space-y-8">
         {/* 7일 진행도 */}
-        <Card>
+        <Card className="border border-gray-200">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <span>7일 챌린지 진행도</span>
@@ -131,14 +131,14 @@ const ChallengeDetail = () => {
         </Card>
 
         {/* 팀원 현황 */}
-        <Card>
+        <Card className="border border-gray-200">
           <CardHeader>
             <CardTitle>함께하는 친구들 ({challenge.participants.length}명)</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-3">
               {challenge.participants.map((participant) => (
-                <div key={participant.id} className="flex items-center gap-2 bg-gray-50 rounded-full px-3 py-2">
+                <div key={participant.id} className="flex items-center gap-2 bg-gray-50 rounded-full px-3 py-2 border border-gray-200">
                   <Avatar className="w-6 h-6">
                     <AvatarFallback>{participant.profileImage}</AvatarFallback>
                   </Avatar>
@@ -154,9 +154,9 @@ const ChallengeDetail = () => {
 
         {/* 오늘의 미션 */}
         {challenge.status === 'in-progress' && challenge.dailyMissions[currentDay] && (
-          <Card>
+          <Card className="border border-gray-200">
             <CardHeader>
-              <CardTitle className="text-lg text-purple-700">
+              <CardTitle className="text-lg text-blue-700">
                 오늘의 미션 ({currentDay + 1}일차)
               </CardTitle>
             </CardHeader>
@@ -170,7 +170,7 @@ const ChallengeDetail = () => {
                 </p>
               </div>
 
-              <div className="space-y-4 p-4 bg-pink-50 rounded-lg">
+              <div className="space-y-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
                 <h4 className="font-medium text-gray-800">미션 인증하기</h4>
                 
                 <div className="space-y-3">
@@ -183,7 +183,7 @@ const ChallengeDetail = () => {
                         type="file"
                         accept="image/*"
                         onChange={handleImageUpload}
-                        className="flex-1"
+                        className="flex-1 border-gray-300"
                       />
                       <Upload size={20} className="text-gray-400" />
                     </div>
@@ -200,13 +200,13 @@ const ChallengeDetail = () => {
                       placeholder="오늘의 미션에 대한 소감을 한두 줄로 적어보세요..."
                       value={missionText}
                       onChange={(e) => setMissionText(e.target.value)}
-                      className="min-h-[80px]"
+                      className="min-h-[80px] border-gray-300"
                     />
                   </div>
                   
                   <Button 
                     onClick={handleSubmitMission}
-                    className="w-full bg-gradient-to-r from-pink-400 to-purple-500 hover:from-pink-500 hover:to-purple-600"
+                    className="w-full bg-blue-600 hover:bg-blue-700"
                   >
                     <Send size={16} className="mr-2" />
                     미션 인증하기
@@ -219,7 +219,7 @@ const ChallengeDetail = () => {
 
         {/* 팀원들의 미션 인증 */}
         {challenge.status === 'in-progress' && challenge.dailyMissions[currentDay]?.submissions.length > 0 && (
-          <Card>
+          <Card className="border border-gray-200">
             <CardHeader>
               <CardTitle>팀원들의 미션 인증</CardTitle>
             </CardHeader>
@@ -227,7 +227,7 @@ const ChallengeDetail = () => {
               {challenge.dailyMissions[currentDay].submissions.map((submission, index) => {
                 const user = mockUsers.find(u => u.id === submission.userId);
                 return (
-                  <div key={index} className="border rounded-lg p-4 space-y-3">
+                  <div key={index} className="border rounded-lg p-4 space-y-3 border-gray-200">
                     <div className="flex items-center gap-3">
                       <Avatar>
                         <AvatarFallback>{user?.profileImage}</AvatarFallback>
@@ -250,14 +250,14 @@ const ChallengeDetail = () => {
                     
                     <p className="text-gray-700">{submission.text}</p>
                     
-                    <div className="flex flex-wrap gap-2 pt-2 border-t">
+                    <div className="flex flex-wrap gap-2 pt-2 border-t border-gray-200">
                       {reactionTypes.map((reaction) => (
                         <Button
                           key={reaction.id}
                           variant="outline"
                           size="sm"
                           onClick={() => handleReaction(index, reaction.id)}
-                          className="text-xs hover:bg-pink-50 hover:border-pink-200"
+                          className="text-xs hover:bg-blue-50 hover:border-blue-200 border-gray-300"
                         >
                           {reaction.emoji} {reaction.label}
                         </Button>

@@ -38,19 +38,17 @@ const CreateChallenge = () => {
       return;
     }
 
-    // 실제로는 여기서 API 호출을 통해 챌린지를 생성
     toast({
       title: "챌린지가 생성되었습니다!",
       description: "새로운 챌린지가 성공적으로 만들어졌습니다. 곧 참여자들이 모일 거예요!",
     });
 
-    // 챌린지 목록으로 이동
     navigate('/');
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
-      <header className="bg-white shadow-sm py-4 px-4">
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white shadow-sm py-4 px-4 border-b border-gray-200">
         <div className="max-w-2xl mx-auto flex items-center gap-4">
           <Button 
             variant="ghost" 
@@ -59,14 +57,14 @@ const CreateChallenge = () => {
           >
             <ArrowLeft size={20} />
           </Button>
-          <h1 className="text-xl font-semibold text-gray-800">새 챌린지 만들기</h1>
+          <h1 className="text-xl font-semibold text-gray-900">새 챌린지 만들기</h1>
         </div>
       </header>
 
       <main className="max-w-2xl mx-auto px-4 py-8">
-        <Card>
+        <Card className="border border-gray-200">
           <CardHeader>
-            <CardTitle className="text-center text-2xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
+            <CardTitle className="text-center text-2xl font-bold text-gray-900">
               7일 챌린지 만들기
             </CardTitle>
             <p className="text-center text-gray-600 mt-2">
@@ -84,7 +82,7 @@ const CreateChallenge = () => {
                   placeholder="예: 매일 감사 일기 쓰기, 10분 산책하기 등"
                   value={challengeTitle}
                   onChange={(e) => setChallengeTitle(e.target.value)}
-                  className="w-full"
+                  className="w-full border-gray-300"
                 />
               </div>
 
@@ -97,7 +95,7 @@ const CreateChallenge = () => {
                   placeholder="이 챌린지를 통해 무엇을 달성하고 싶나요? 팀원들에게 어떤 경험을 선사하고 싶은지 구체적으로 적어보세요."
                   value={challengeDescription}
                   onChange={(e) => setChallengeDescription(e.target.value)}
-                  className="min-h-[120px] w-full"
+                  className="min-h-[120px] w-full border-gray-300"
                 />
               </div>
 
@@ -106,7 +104,7 @@ const CreateChallenge = () => {
                   목표 인원 *
                 </Label>
                 <Select value={targetParticipants} onValueChange={setTargetParticipants}>
-                  <SelectTrigger>
+                  <SelectTrigger className="border-gray-300">
                     <SelectValue placeholder="함께할 팀원 수를 선택하세요" />
                   </SelectTrigger>
                   <SelectContent>
@@ -122,7 +120,7 @@ const CreateChallenge = () => {
                 </p>
               </div>
 
-              <div className="bg-blue-50 p-4 rounded-lg">
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                 <h3 className="font-medium text-blue-800 mb-2">💡 챌린지 운영 팁</h3>
                 <ul className="text-sm text-blue-700 space-y-1">
                   <li>• 너무 큰 목표보다는 작고 달성 가능한 목표로 시작하세요</li>
@@ -136,13 +134,13 @@ const CreateChallenge = () => {
                   type="button"
                   variant="outline" 
                   onClick={() => navigate(-1)}
-                  className="flex-1"
+                  className="flex-1 border-gray-300"
                 >
                   취소
                 </Button>
                 <Button 
                   type="submit"
-                  className="flex-1 bg-gradient-to-r from-pink-400 to-purple-500 hover:from-pink-500 hover:to-purple-600"
+                  className="flex-1 bg-blue-600 hover:bg-blue-700"
                 >
                   챌린지 만들기
                 </Button>
