@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, Upload, Send } from 'lucide-react';
+import { ArrowLeft, Upload, Send, Camera } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 const ChallengeDetail = () => {
@@ -74,55 +74,55 @@ const ChallengeDetail = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm py-4 px-4 border-b border-gray-200">
+      <header className="bg-white py-4 px-4 border-b border-gray-100">
         <div className="max-w-4xl mx-auto flex items-center gap-4">
           <Button 
             variant="ghost" 
             onClick={() => navigate(-1)}
-            className="text-gray-600 hover:text-gray-800"
+            className="text-gray-500 hover:text-gray-700 hover:bg-gray-50"
           >
             <ArrowLeft size={20} />
           </Button>
           <div className="flex-1">
-            <h1 className="text-xl font-semibold text-gray-900">{challenge.title}</h1>
-            <p className="text-sm text-gray-600">{challenge.description}</p>
+            <h1 className="text-xl font-bold text-gray-900">{challenge.title}</h1>
+            <p className="text-sm text-gray-600 mt-1">{challenge.description}</p>
           </div>
-          <Badge className={challenge.status === 'recruiting' ? 'bg-blue-50 text-blue-700 border-blue-200' : 
-                           challenge.status === 'in-progress' ? 'bg-green-50 text-green-700 border-green-200' : 
-                           'bg-gray-50 text-gray-700 border-gray-200'}>
+          <Badge className={challenge.status === 'recruiting' ? 'bg-blue-50 text-blue-600 border-blue-100' : 
+                           challenge.status === 'in-progress' ? 'bg-green-50 text-green-600 border-green-100' : 
+                           'bg-gray-50 text-gray-600 border-gray-100'}>
             {challenge.status === 'recruiting' ? '모집중' : 
              challenge.status === 'in-progress' ? '진행중' : '완료'}
           </Badge>
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+      <main className="max-w-4xl mx-auto px-4 py-8 space-y-6">
         {/* 7일 진행도 */}
-        <Card className="border border-gray-200">
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              <span>7일 챌린지 진행도</span>
+        <Card className="border border-gray-100 shadow-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="flex items-center justify-between text-lg">
+              <span className="text-gray-900">7일 챌린지 진행도</span>
               {challenge.status === 'recruiting' && challenge.hostId === currentUserId && (
-                <Button onClick={handleStartChallenge} className="bg-green-600 hover:bg-green-700">
+                <Button onClick={handleStartChallenge} className="bg-blue-600 hover:bg-blue-700 text-white">
                   챌린지 시작하기
                 </Button>
               )}
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-0">
             <div className="space-y-4">
-              <Progress value={progressPercentage} className="w-full" />
+              <Progress value={progressPercentage} className="w-full h-2" />
               <div className="grid grid-cols-7 gap-2">
                 {Array.from({ length: 7 }, (_, i) => (
                   <div key={i} className="text-center">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium mx-auto mb-1 ${
-                      i < currentDay ? 'bg-green-500 text-white' : 
-                      i === currentDay ? 'bg-blue-500 text-white' : 
-                      'bg-gray-200 text-gray-500'
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mx-auto mb-2 ${
+                      i < currentDay ? 'bg-green-600 text-white' : 
+                      i === currentDay ? 'bg-blue-600 text-white' : 
+                      'bg-gray-100 text-gray-400'
                     }`}>
                       {i + 1}
                     </div>
-                    <span className="text-xs text-gray-600">{i + 1}일차</span>
+                    <span className="text-xs text-gray-500">{i + 1}일차</span>
                   </div>
                 ))}
               </div>
@@ -131,20 +131,20 @@ const ChallengeDetail = () => {
         </Card>
 
         {/* 팀원 현황 */}
-        <Card className="border border-gray-200">
-          <CardHeader>
-            <CardTitle>함께하는 친구들 ({challenge.participants.length}명)</CardTitle>
+        <Card className="border border-gray-100 shadow-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg text-gray-900">함께하는 친구들 ({challenge.participants.length}명)</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-0">
             <div className="flex flex-wrap gap-3">
               {challenge.participants.map((participant) => (
-                <div key={participant.id} className="flex items-center gap-2 bg-gray-50 rounded-full px-3 py-2 border border-gray-200">
-                  <Avatar className="w-6 h-6">
-                    <AvatarFallback>{participant.profileImage}</AvatarFallback>
+                <div key={participant.id} className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2 border border-gray-100">
+                  <Avatar className="w-7 h-7">
+                    <AvatarFallback className="text-sm">{participant.profileImage}</AvatarFallback>
                   </Avatar>
-                  <span className="text-sm font-medium">{participant.name}</span>
+                  <span className="text-sm font-medium text-gray-900">{participant.name}</span>
                   {participant.id === challenge.hostId && (
-                    <Badge variant="outline" className="text-xs">방장</Badge>
+                    <Badge variant="outline" className="text-xs text-blue-600 border-blue-200">방장</Badge>
                   )}
                 </div>
               ))}
@@ -154,59 +154,68 @@ const ChallengeDetail = () => {
 
         {/* 오늘의 미션 */}
         {challenge.status === 'in-progress' && challenge.dailyMissions[currentDay] && (
-          <Card className="border border-gray-200">
-            <CardHeader>
-              <CardTitle className="text-lg text-blue-700">
+          <Card className="border border-gray-100 shadow-sm">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-lg text-blue-600">
                 오늘의 미션 ({currentDay + 1}일차)
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <h3 className="font-semibold text-gray-800 mb-2">
+            <CardContent className="pt-0 space-y-4">
+              <div className="p-4 bg-blue-50 rounded-lg border border-blue-100">
+                <h3 className="font-semibold text-gray-900 mb-2">
                   {challenge.dailyMissions[currentDay].title}
                 </h3>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-700 text-sm leading-relaxed">
                   {challenge.dailyMissions[currentDay].description}
                 </p>
               </div>
 
-              <div className="space-y-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <h4 className="font-medium text-gray-800">미션 인증하기</h4>
+              <div className="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                <div className="flex items-center gap-2 mb-3">
+                  <Camera size={20} className="text-blue-600" />
+                  <h4 className="font-semibold text-gray-900">미션 인증하기</h4>
+                </div>
                 
-                <div className="space-y-3">
+                <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      사진 업로드 (선택사항)
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      사진 업로드
                     </label>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-3">
                       <Input
                         type="file"
                         accept="image/*"
                         onChange={handleImageUpload}
-                        className="flex-1 border-gray-300"
+                        className="flex-1 border-gray-200 bg-white"
                       />
-                      <Upload size={20} className="text-gray-400" />
+                      <Upload size={18} className="text-gray-400" />
                     </div>
                     {selectedImage && (
-                      <img src={selectedImage} alt="미션 인증" className="mt-2 w-32 h-32 object-cover rounded-lg" />
+                      <div className="mt-3">
+                        <img 
+                          src={selectedImage} 
+                          alt="미션 인증" 
+                          className="w-40 h-40 object-cover rounded-lg border border-gray-200" 
+                        />
+                      </div>
                     )}
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      한두 줄 소감
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      미션 소감
                     </label>
                     <Textarea
-                      placeholder="오늘의 미션에 대한 소감을 한두 줄로 적어보세요..."
+                      placeholder="오늘의 미션에 대한 소감을 간단히 적어보세요..."
                       value={missionText}
                       onChange={(e) => setMissionText(e.target.value)}
-                      className="min-h-[80px] border-gray-300"
+                      className="min-h-[100px] border-gray-200 bg-white resize-none"
                     />
                   </div>
                   
                   <Button 
                     onClick={handleSubmitMission}
-                    className="w-full bg-blue-600 hover:bg-blue-700"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3"
                   >
                     <Send size={16} className="mr-2" />
                     미션 인증하기
@@ -219,45 +228,52 @@ const ChallengeDetail = () => {
 
         {/* 팀원들의 미션 인증 */}
         {challenge.status === 'in-progress' && challenge.dailyMissions[currentDay]?.submissions.length > 0 && (
-          <Card className="border border-gray-200">
-            <CardHeader>
-              <CardTitle>팀원들의 미션 인증</CardTitle>
+          <Card className="border border-gray-100 shadow-sm">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-lg text-gray-900">팀원들의 미션 인증</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="pt-0 space-y-6">
               {challenge.dailyMissions[currentDay].submissions.map((submission, index) => {
                 const user = mockUsers.find(u => u.id === submission.userId);
                 return (
-                  <div key={index} className="border rounded-lg p-4 space-y-3 border-gray-200">
+                  <div key={index} className="border border-gray-100 rounded-lg p-5 space-y-4 bg-white">
                     <div className="flex items-center gap-3">
-                      <Avatar>
-                        <AvatarFallback>{user?.profileImage}</AvatarFallback>
+                      <Avatar className="w-10 h-10">
+                        <AvatarFallback className="text-lg">{user?.profileImage}</AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-medium">{user?.name}</p>
+                        <p className="font-semibold text-gray-900">{user?.name}</p>
                         <p className="text-sm text-gray-500">
-                          {new Date(submission.submittedAt).toLocaleString()}
+                          {new Date(submission.submittedAt).toLocaleString('ko-KR', {
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
                         </p>
                       </div>
                     </div>
                     
                     {submission.imageUrl && (
-                      <img 
-                        src={submission.imageUrl} 
-                        alt="미션 인증" 
-                        className="w-full max-w-sm rounded-lg object-cover"
-                      />
+                      <div className="rounded-lg overflow-hidden">
+                        <img 
+                          src={submission.imageUrl} 
+                          alt="미션 인증" 
+                          className="w-full max-w-md rounded-lg object-cover border border-gray-100"
+                        />
+                      </div>
                     )}
                     
-                    <p className="text-gray-700">{submission.text}</p>
+                    <p className="text-gray-800 leading-relaxed bg-gray-50 p-3 rounded-lg">{submission.text}</p>
                     
-                    <div className="flex flex-wrap gap-2 pt-2 border-t border-gray-200">
+                    <div className="flex flex-wrap gap-2 pt-3 border-t border-gray-100">
                       {reactionTypes.map((reaction) => (
                         <Button
                           key={reaction.id}
                           variant="outline"
                           size="sm"
                           onClick={() => handleReaction(index, reaction.id)}
-                          className="text-xs hover:bg-blue-50 hover:border-blue-200 border-gray-300"
+                          className="text-sm hover:bg-blue-50 hover:border-blue-200 border-gray-200 text-gray-700"
                         >
                           {reaction.emoji} {reaction.label}
                         </Button>
@@ -265,9 +281,9 @@ const ChallengeDetail = () => {
                     </div>
                     
                     {submission.reactions.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-2">
+                      <div className="flex flex-wrap gap-2 mt-3">
                         {submission.reactions.map((reaction, i) => (
-                          <Badge key={i} variant="secondary" className="text-xs">
+                          <Badge key={i} variant="secondary" className="text-sm bg-blue-50 text-blue-700 border-blue-100">
                             {reactionTypes.find(r => r.id === reaction.type)?.emoji} {reaction.message}
                           </Badge>
                         ))}

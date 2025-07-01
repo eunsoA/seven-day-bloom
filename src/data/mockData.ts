@@ -1,4 +1,3 @@
-
 import { User, Challenge, ReactionType } from '../types';
 
 export const mockUsers: User[] = [
@@ -97,14 +96,50 @@ export const mockChallenges: Challenge[] = [
         submissions: [
           {
             userId: '2',
-            imageUrl: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400',
-            text: '집 근처 작은 공원을 발견했어요. 벤치에 앉아서 잠시 쉬었는데 마음이 평화로웠어요.',
+            imageUrl: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=400&fit=crop',
+            text: '집 근처 작은 공원을 발견했어요. 벤치에 앉아서 잠시 쉬었는데 마음이 평화로웠어요. 바람이 살랑살랑 불어서 기분이 좋았습니다.',
             submittedAt: '2024-06-25T09:00:00Z',
             reactions: [
               {
                 userId: '3',
                 type: 'great-job',
                 message: '정말 잘했어요!'
+              },
+              {
+                userId: '4',
+                type: 'cheer-up',
+                message: '응원해요!'
+              }
+            ]
+          },
+          {
+            userId: '4',
+            imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=400&fit=crop',
+            text: '오늘은 한강 공원에서 산책했어요! 강물이 흘러가는 소리를 들으며 걸으니 스트레스가 많이 풀렸습니다. 내일도 꼭 나와야겠어요.',
+            submittedAt: '2024-06-25T10:30:00Z',
+            reactions: [
+              {
+                userId: '2',
+                type: 'amazing',
+                message: '정말 멋져요!'
+              }
+            ]
+          },
+          {
+            userId: '6',
+            imageUrl: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=400&h=400&fit=crop',
+            text: '바다 근처로 산책을 갔어요. 파도 소리를 들으며 걷는 게 이렇게 좋은 줄 몰랐네요. 10분이 금세 지나갔어요!',
+            submittedAt: '2024-06-25T16:45:00Z',
+            reactions: [
+              {
+                userId: '2',
+                type: 'good-work',
+                message: '수고 많았어요!'
+              },
+              {
+                userId: '4',
+                type: 'keep-going',
+                message: '계속 화이팅!'
               }
             ]
           }
