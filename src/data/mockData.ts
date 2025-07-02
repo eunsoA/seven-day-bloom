@@ -256,9 +256,225 @@ export const mockChallenges: Challenge[] = [
             reactions: []
           }
         ]
+      },
+      {
+        day: 7,
+        title: '마지막 날의 소감',
+        description: '일주일간의 산책 챌린지를 마무리하며 소감을 기록해보세요.',
+        submissions: []
       }
     ],
     createdAt: '2024-06-20'
+  },
+  {
+    id: '11',
+    title: '하루하루 독서하기',
+    description: '매일 30분씩 책을 읽으며 독서 습관을 기르고 새로운 지식을 얻어보아요.',
+    hostId: '3',
+    targetParticipants: 4,
+    currentParticipants: 4,
+    participants: [mockUsers[2], mockUsers[0], mockUsers[4], mockUsers[6]],
+    status: 'in-progress',
+    startDate: '2024-06-30',
+    dailyMissions: [
+      {
+        day: 1,
+        title: '첫 독서 시작하기',
+        description: '읽고 싶은 책을 선택하고 첫 30분 독서를 시작해보세요.',
+        submissions: [
+          {
+            userId: '3',
+            imageUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=400&fit=crop',
+            text: '드디어 미뤄뒀던 소설책을 펼쳤어요. 첫 장부터 몰입이 되네요!',
+            submittedAt: '2024-06-30T20:00:00Z',
+            reactions: []
+          },
+          {
+            userId: '1',
+            imageUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=400&fit=crop',
+            text: '자기계발서를 읽기 시작했어요. 첫 챕터부터 유익한 내용이 많네요.',
+            submittedAt: '2024-06-30T21:30:00Z',
+            reactions: []
+          },
+          {
+            userId: '5',
+            imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
+            text: '에세이집을 선택했어요. 저자의 일상 이야기가 공감되어서 좋았습니다.',
+            submittedAt: '2024-06-30T19:00:00Z',
+            reactions: []
+          },
+          {
+            userId: '7',
+            imageUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=400&fit=crop',
+            text: '판타지 소설을 읽고 있어요. 상상력이 풍부해져서 기분이 좋아요.',
+            submittedAt: '2024-06-30T22:00:00Z',
+            reactions: []
+          }
+        ]
+      },
+      {
+        day: 2,
+        title: '읽은 내용 정리하기',
+        description: '어제 읽은 내용 중 인상 깊었던 부분을 간단히 정리해보세요.',
+        submissions: [
+          {
+            userId: '3',
+            imageUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=400&fit=crop',
+            text: '주인공의 선택이 인상적이었어요. 어려운 상황에서도 포기하지 않는 모습이 감동적이었습니다.',
+            submittedAt: '2024-07-01T20:30:00Z',
+            reactions: []
+          },
+          {
+            userId: '1',
+            imageUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=400&fit=crop',
+            text: '"작은 습관이 큰 변화를 만든다"는 문장이 마음에 들었어요. 저도 실천해보고 싶어요.',
+            submittedAt: '2024-07-01T21:00:00Z',
+            reactions: []
+          },
+          {
+            userId: '5',
+            imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
+            text: '저자가 말하는 일상의 소중함에 대해 많이 생각해봤어요. 평범한 하루도 특별할 수 있다는 걸 깨달았어요.',
+            submittedAt: '2024-07-01T19:30:00Z',
+            reactions: []
+          }
+        ]
+      },
+      {
+        day: 3,
+        title: '새로운 관점 발견하기',
+        description: '책을 읽으며 새롭게 알게 된 것이나 관점의 변화를 기록해보세요.',
+        submissions: [
+          {
+            userId: '3',
+            imageUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=400&fit=crop',
+            text: '등장인물의 다양한 관점을 보며 세상을 바라보는 시각이 넓어졌어요.',
+            submittedAt: '2024-07-02T20:00:00Z',
+            reactions: []
+          },
+          {
+            userId: '1',
+            imageUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=400&fit=crop',
+            text: '시간 관리에 대한 새로운 방법을 배웠어요. 내일부터 적용해보려고 합니다.',
+            submittedAt: '2024-07-02T21:15:00Z',
+            reactions: []
+          }
+        ]
+      }
+    ],
+    createdAt: '2024-06-28'
+  },
+  {
+    id: '12',
+    title: '매일 5분 명상하기',
+    description: '바쁜 일상 속에서 잠시 멈춰 서서 나 자신과 마주하는 시간을 가져보아요.',
+    hostId: '4',
+    targetParticipants: 5,
+    currentParticipants: 3,
+    participants: [mockUsers[3], mockUsers[1], mockUsers[5]],
+    status: 'in-progress',
+    startDate: '2024-06-28',
+    dailyMissions: [
+      {
+        day: 1,
+        title: '명상 자세 익히기',
+        description: '편안한 자세로 앉아서 5분간 호흡에 집중해보세요.',
+        submissions: [
+          {
+            userId: '4',
+            imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop',
+            text: '처음이라 집중이 어려웠지만 마음이 조금씩 차분해지는 느낌이었어요.',
+            submittedAt: '2024-06-28T07:00:00Z',
+            reactions: []
+          },
+          {
+            userId: '2',
+            imageUrl: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=400&fit=crop',
+            text: '5분이 이렇게 길게 느껴질 줄 몰랐어요. 하지만 끝나고 나니 개운했습니다.',
+            submittedAt: '2024-06-28T08:30:00Z',
+            reactions: []
+          },
+          {
+            userId: '6',
+            imageUrl: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=400&h=400&fit=crop',
+            text: '아침 일찍 명상하니까 하루가 더 여유롭게 시작되는 것 같아요.',
+            submittedAt: '2024-06-28T06:45:00Z',
+            reactions: []
+          }
+        ]
+      },
+      {
+        day: 2,
+        title: '감정 관찰하기',
+        description: '명상하며 지금 내 마음의 상태를 있는 그대로 관찰해보세요.',
+        submissions: [
+          {
+            userId: '4',
+            imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop',
+            text: '오늘은 약간 불안했는데 명상을 통해 그 감정을 받아들일 수 있었어요.',
+            submittedAt: '2024-06-29T07:30:00Z',
+            reactions: []
+          },
+          {
+            userId: '2',
+            imageUrl: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=400&fit=crop',
+            text: '스트레스가 많았는데 명상 후에 마음이 한결 가벼워졌어요. 신기하네요.',
+            submittedAt: '2024-06-29T08:00:00Z',
+            reactions: []
+          }
+        ]
+      },
+      {
+        day: 3,
+        title: '감사 명상하기',
+        description: '오늘 감사한 것들을 떠올리며 명상해보세요.',
+        submissions: [
+          {
+            userId: '4',
+            imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop',
+            text: '건강하게 숨쉴 수 있다는 것에 감사했어요. 당연한 것들이 얼마나 소중한지 느꼈습니다.',
+            submittedAt: '2024-06-30T07:00:00Z',
+            reactions: []
+          }
+        ]
+      },
+      {
+        day: 4,
+        title: '자애 명상하기',
+        description: '자신과 타인에게 따뜻한 마음을 보내는 명상을 해보세요.',
+        submissions: [
+          {
+            userId: '4',
+            imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop',
+            text: '나 자신에게 친절하게 대하는 연습을 했어요. 평소보다 마음이 따뜻해졌습니다.',
+            submittedAt: '2024-07-01T07:15:00Z',
+            reactions: []
+          },
+          {
+            userId: '2',
+            imageUrl: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=400&fit=crop',
+            text: '가족과 친구들에게 좋은 에너지를 보내는 시간이었어요. 마음이 평화로워졌어요.',
+            submittedAt: '2024-07-01T08:00:00Z',
+            reactions: []
+          }
+        ]
+      },
+      {
+        day: 5,
+        title: '집중력 기르기',
+        description: '한 점에 집중하며 집중력을 기르는 명상을 해보세요.',
+        submissions: [
+          {
+            userId: '4',
+            imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop',
+            text: '집중력이 많이 향상된 것 같아요. 잡념이 줄어들고 마음이 안정되었습니다.',
+            submittedAt: '2024-07-02T07:30:00Z',
+            reactions: []
+          }
+        ]
+      }
+    ],
+    createdAt: '2024-06-26'
   },
   {
     id: '3',
