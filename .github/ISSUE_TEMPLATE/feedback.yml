@@ -1,15 +1,6 @@
----
-name: 사용자 피드백
-about: 동작하는 프로토타입에 대해 자유롭게 피드백을 남겨주세요.
-title: ''
-labels: ''
-assignees: ''
-
----
-
 name: 사용자 피드백
 description: Day7 프로토타입을 사용한 뒤 간단한 피드백을 남겨주세요.
-title: "[피드백] 사용자 이름 / 주요 의견"
+title: '[피드백] 사용자 이름 / 주요 의견'
 labels: [feedback]
 body:
   - type: input
