@@ -17,6 +17,7 @@ const ChallengeDetail = () => {
   const navigate = useNavigate();
   const [missionText, setMissionText] = useState('');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
   
   const challenge = mockChallenges.find(c => c.id === id);
   const currentUser = mockUsers.find(u => u.id === currentUserId);
@@ -30,7 +31,7 @@ const ChallengeDetail = () => {
     if (challenge.status === 'completed') {
       return { currentDay: 7, progressPercentage: 100 };
     } else if (challenge.status === 'in-progress') {
-      return { currentDay: 1, progressPercentage: (1 / 7) * 100 };
+      return { currentDay: 1, progressPercentage: (2 / 7) * 100 };
     } else {
       return { currentDay: 0, progressPercentage: 0 };
     }
@@ -53,6 +54,56 @@ const ChallengeDetail = () => {
       completed: mission.submissions.length,
       total: challenge.participants.length
     };
+  };
+
+  // 일차별 버튼 상태 및 색상 결정
+  const getDayButtonStyle = (dayIndex: number) => {
+    const { completed, total } = getMissionSuccessCount(dayIndex);
+    const isToday = dayIndex === currentDay && challenge.status === 'in-progress';
+    
+    if (dayIndex > currentDay) {
+      // 1. 아직 활성화되지 않은 상태
+      return {
+        bg: 'bg-gray-100',
+        text: 'text-gray-400',
+        border: ''
+      };
+    } else if (isToday && completed === 0) {
+      // 2. 오늘이 해당 요일이지만 아무도 인증하지 않은 상태
+      return {
+        bg: 'bg-orange-100',
+        text: 'text-orange-600',
+        border: 'ring-2 ring-orange-400'
+      };
+    } else if (isToday && completed > 0 && completed < total) {
+      // 3. 오늘이 해당 요일이고, 일부가 인증한 상태
+      return {
+        bg: 'bg-blue-100',
+        text: 'text-blue-600',
+        border: 'ring-2 ring-blue-400'
+      };
+    } else if (isToday && completed === total) {
+      // 4. 오늘이 해당 요일이고, 전부 인증 완료한 상태
+      return {
+        bg: 'bg-green-100',
+        text: 'text-green-600',
+        border: 'ring-2 ring-green-400'
+      };
+    } else if (dayIndex < currentDay) {
+      // 완료된 일차
+      return {
+        bg: 'bg-green-600',
+        text: 'text-white',
+        border: ''
+      };
+    } else {
+      // 기본 상태
+      return {
+        bg: 'bg-gray-100',
+        text: 'text-gray-400',
+        border: ''
+      };
+    }
   };
 
   const handleSubmitMission = () => {
@@ -99,6 +150,12 @@ const ChallengeDetail = () => {
     });
   };
 
+  const handleDayClick = (dayIndex: number) => {
+    if (dayIndex <= currentDay || challenge.status === 'completed') {
+      setSelectedDay(selectedDay === dayIndex ? null : dayIndex);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white py-4 px-4 border-b border-gray-100">
@@ -138,19 +195,33 @@ const ChallengeDetail = () => {
           </CardHeader>
           <CardContent className="pt-0">
             <div className="space-y-4">
-              <Progress value={progressPercentage} className="w-full h-2" />
+              <div className="relative">
+                <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-gradient-to-r from-blue-400 via-purple-500 to-green-500 transition-all duration-500 ease-out"
+                    style={{ width: `${progressPercentage}%` }}
+                  />
+                </div>
+              </div>
               <div className="grid grid-cols-7 gap-2">
                 {Array.from({ length: 7 }, (_, i) => {
                   const { completed, total } = getMissionSuccessCount(i);
+                  const buttonStyle = getDayButtonStyle(i);
+                  const isClickable = i <= currentDay || challenge.status === 'completed';
+                  
                   return (
                     <div key={i} className="text-center">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mx-auto mb-2 ${
-                        i < currentDay ? 'bg-green-600 text-white' : 
-                        i === currentDay && challenge.status === 'in-progress' ? 'bg-blue-600 text-white' : 
-                        'bg-gray-100 text-gray-400'
-                      }`}>
+                      <button
+                        onClick={() => handleDayClick(i)}
+                        disabled={!isClickable}
+                        className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mx-auto mb-2 transition-all duration-200 ${
+                          buttonStyle.bg
+                        } ${buttonStyle.text} ${buttonStyle.border} ${
+                          isClickable ? 'hover:scale-105 cursor-pointer' : 'cursor-not-allowed'
+                        } ${selectedDay === i ? 'ring-2 ring-offset-2 ring-blue-500' : ''}`}
+                      >
                         {i + 1}
-                      </div>
+                      </button>
                       <span className="text-xs text-gray-500">
                         {challenge.status === 'recruiting' ? `${i + 1}일차` : `(${completed}/${total})`}
                       </span>
@@ -258,18 +329,18 @@ const ChallengeDetail = () => {
           </Card>
         )}
 
-        {/* 진행중/완료된 챌린지: 팀원들의 미션 인증 */}
-        {(challenge.status === 'in-progress' || challenge.status === 'completed') && (
+        {/* 선택된 일차의 미션 인증 보기 */}
+        {selectedDay !== null && (challenge.status === 'in-progress' || challenge.status === 'completed') && (
           <>
-            {Array.from({ length: challenge.status === 'completed' ? 7 : currentDay + 1 }, (_, dayIndex) => {
-              const mission = challenge.dailyMissions[dayIndex];
+            {(() => {
+              const mission = challenge.dailyMissions[selectedDay];
               if (!mission || mission.submissions.length === 0) return null;
               
               return (
-                <Card key={dayIndex} className="border border-gray-100 shadow-sm">
+                <Card className="border border-gray-100 shadow-sm">
                   <CardHeader className="pb-4">
                     <CardTitle className="text-lg text-gray-900">
-                      {dayIndex + 1}일차 미션 인증 ({mission.submissions.length}명 완료)
+                      {selectedDay + 1}일차 미션 인증 ({mission.submissions.length}명 완료)
                     </CardTitle>
                     <p className="text-sm text-gray-600 mt-1">{mission.title}</p>
                   </CardHeader>
@@ -336,7 +407,7 @@ const ChallengeDetail = () => {
                   </CardContent>
                 </Card>
               );
-            })}
+            })()}
           </>
         )}
       </main>
