@@ -84,8 +84,8 @@ export const mockChallenges: Challenge[] = [
     description: '건강한 몸과 마음을 위해 매일 10분씩 산책하며 자연을 느껴보아요.',
     hostId: '2',
     targetParticipants: 6,
-    currentParticipants: 4,
-    participants: [mockUsers[1], mockUsers[3], mockUsers[4], mockUsers[5]],
+    currentParticipants: 3,
+    participants: [mockUsers[1], mockUsers[3], mockUsers[5]],
     status: 'in-progress',
     startDate: '2024-06-25',
     dailyMissions: [
@@ -97,51 +97,163 @@ export const mockChallenges: Challenge[] = [
           {
             userId: '2',
             imageUrl: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=400&fit=crop',
-            text: '집 근처 작은 공원을 발견했어요. 벤치에 앉아서 잠시 쉬었는데 마음이 평화로웠어요. 바람이 살랑살랑 불어서 기분이 좋았습니다.',
+            text: '집 근처 작은 공원을 발견했어요. 벤치에 앉아서 잠시 쉬었는데 마음이 평화로웠어요.',
             submittedAt: '2024-06-25T09:00:00Z',
-            reactions: [
-              {
-                userId: '3',
-                type: 'great-job',
-                message: '정말 잘했어요!'
-              },
-              {
-                userId: '4',
-                type: 'cheer-up',
-                message: '응원해요!'
-              }
-            ]
+            reactions: []
           },
           {
             userId: '4',
             imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=400&fit=crop',
-            text: '오늘은 한강 공원에서 산책했어요! 강물이 흘러가는 소리를 들으며 걸으니 스트레스가 많이 풀렸습니다. 내일도 꼭 나와야겠어요.',
+            text: '오늘은 한강 공원에서 산책했어요! 강물이 흘러가는 소리를 들으며 걸으니 스트레스가 많이 풀렸습니다.',
             submittedAt: '2024-06-25T10:30:00Z',
-            reactions: [
-              {
-                userId: '2',
-                type: 'amazing',
-                message: '정말 멋져요!'
-              }
-            ]
+            reactions: []
           },
           {
             userId: '6',
             imageUrl: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=400&h=400&fit=crop',
-            text: '바다 근처로 산책을 갔어요. 파도 소리를 들으며 걷는 게 이렇게 좋은 줄 몰랐네요. 10분이 금세 지나갔어요!',
+            text: '바다 근처로 산책을 갔어요. 파도 소리를 들으며 걷는 게 이렇게 좋은 줄 몰랐네요.',
             submittedAt: '2024-06-25T16:45:00Z',
-            reactions: [
-              {
-                userId: '2',
-                type: 'good-work',
-                message: '수고 많았어요!'
-              },
-              {
-                userId: '4',
-                type: 'keep-going',
-                message: '계속 화이팅!'
-              }
-            ]
+            reactions: []
+          }
+        ]
+      },
+      {
+        day: 2,
+        title: '새로운 길 탐험하기',
+        description: '평소 가보지 않은 길로 산책하며 새로운 발견을 기록해보세요.',
+        submissions: [
+          {
+            userId: '2',
+            imageUrl: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=400&fit=crop',
+            text: '새로운 골목길을 발견했어요. 오래된 벽화가 정말 아름다웠습니다.',
+            submittedAt: '2024-06-26T08:30:00Z',
+            reactions: []
+          },
+          {
+            userId: '4',
+            imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop',
+            text: '언덕 위로 올라가는 길을 걸었더니 도시 전경이 한눈에 보였어요. 힘들었지만 보람있었습니다.',
+            submittedAt: '2024-06-26T18:00:00Z',
+            reactions: []
+          },
+          {
+            userId: '6',
+            imageUrl: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=400&fit=crop',
+            text: '작은 카페가 있는 거리를 걸었어요. 커피 향이 좋아서 기분이 좋아졌습니다.',
+            submittedAt: '2024-06-26T19:30:00Z',
+            reactions: []
+          }
+        ]
+      },
+      {
+        day: 3,
+        title: '자연과 함께하기',
+        description: '공원이나 자연이 있는 곳에서 산책하며 자연의 소리에 집중해보세요.',
+        submissions: [
+          {
+            userId: '2',
+            imageUrl: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=400&h=400&fit=crop',
+            text: '새소리가 정말 좋았어요. 스마트폰을 잠시 끄고 자연의 소리에만 집중했습니다.',
+            submittedAt: '2024-06-27T07:15:00Z',
+            reactions: []
+          },
+          {
+            userId: '4',
+            imageUrl: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=400&h=400&fit=crop',
+            text: '나무 그늘 아래서 쉬면서 바람 소리를 들었어요. 마음이 정말 평온해졌습니다.',
+            submittedAt: '2024-06-27T17:45:00Z',
+            reactions: []
+          },
+          {
+            userId: '6',
+            imageUrl: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=400&fit=crop',
+            text: '연못가를 걸으며 오리들을 구경했어요. 평화로운 시간이었습니다.',
+            submittedAt: '2024-06-27T20:00:00Z',
+            reactions: []
+          }
+        ]
+      },
+      {
+        day: 4,
+        title: '감사한 마음으로 걷기',
+        description: '산책하며 오늘 감사한 일들을 떠올려보세요.',
+        submissions: [
+          {
+            userId: '2',
+            imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=400&fit=crop',
+            text: '건강하게 걸을 수 있다는 것에 감사했어요. 당연한 것들이 사실은 소중하다는 걸 느꼈습니다.',
+            submittedAt: '2024-06-28T08:00:00Z',
+            reactions: []
+          },
+          {
+            userId: '4',
+            imageUrl: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=400&fit=crop',
+            text: '가족과 친구들에게 감사한 마음이 들었어요. 혼자 걷는 시간이지만 외롭지 않았습니다.',
+            submittedAt: '2024-06-28T19:00:00Z',
+            reactions: []
+          },
+          {
+            userId: '6',
+            imageUrl: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&h=400&fit=crop',
+            text: '좋은 날씨에 감사했어요. 따뜻한 햇살 아래서 걷는 기분이 정말 좋았습니다.',
+            submittedAt: '2024-06-28T16:30:00Z',
+            reactions: []
+          }
+        ]
+      },
+      {
+        day: 5,
+        title: '천천히 여유롭게',
+        description: '오늘은 평소보다 천천히 걸으며 주변을 자세히 관찰해보세요.',
+        submissions: [
+          {
+            userId: '2',
+            imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop',
+            text: '천천히 걸으니 평소 놓쳤던 것들이 보였어요. 작은 꽃들이 정말 예뻤습니다.',
+            submittedAt: '2024-06-29T07:30:00Z',
+            reactions: []
+          },
+          {
+            userId: '4',
+            imageUrl: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=400&h=400&fit=crop',
+            text: '급하지 않게 걷는 게 이렇게 좋은 줄 몰랐어요. 마음도 여유로워졌습니다.',
+            submittedAt: '2024-06-29T18:15:00Z',
+            reactions: []
+          },
+          {
+            userId: '6',
+            imageUrl: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=400&h=400&fit=crop',
+            text: '건물들의 모양이나 색깔을 자세히 봤어요. 평소에는 그냥 지나쳤던 것들이었는데 새로웠습니다.',
+            submittedAt: '2024-06-29T20:45:00Z',
+            reactions: []
+          }
+        ]
+      },
+      {
+        day: 6,
+        title: '내일을 위한 다짐',
+        description: '산책하며 내일 하고 싶은 일이나 목표에 대해 생각해보세요.',
+        submissions: [
+          {
+            userId: '2',
+            imageUrl: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=400&fit=crop',
+            text: '내일은 좀 더 일찍 일어나서 산책하고 싶어요. 아침 공기가 정말 좋거든요.',
+            submittedAt: '2024-06-30T08:45:00Z',
+            reactions: []
+          },
+          {
+            userId: '4',
+            imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=400&fit=crop',
+            text: '이 챌린지가 끝나도 산책을 계속하고 싶어요. 정말 좋은 습관이 된 것 같습니다.',
+            submittedAt: '2024-06-30T17:00:00Z',
+            reactions: []
+          },
+          {
+            userId: '6',
+            imageUrl: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=400&fit=crop',
+            text: '친구들에게도 산책을 추천하고 싶어요. 함께 걸으면 더 즐거울 것 같습니다.',
+            submittedAt: '2024-06-30T19:30:00Z',
+            reactions: []
           }
         ]
       }

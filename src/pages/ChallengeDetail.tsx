@@ -8,8 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, Upload, Send, Camera } from 'lucide-react';
+import { ArrowLeft, Upload, Send, Camera, Calendar, Users } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 const ChallengeDetail = () => {
@@ -29,9 +28,9 @@ const ChallengeDetail = () => {
   // 상태에 따른 진행도 계산
   const getProgressInfo = () => {
     if (challenge.status === 'completed') {
-      return { currentDay: 7, progressPercentage: 100 };
+      return { currentDay: 6, progressPercentage: 100 };
     } else if (challenge.status === 'in-progress') {
-      return { currentDay: 1, progressPercentage: (2 / 7) * 100 };
+      return { currentDay: 6, progressPercentage: (7 / 7) * 100 };
     } else {
       return { currentDay: 0, progressPercentage: 0 };
     }
@@ -56,48 +55,66 @@ const ChallengeDetail = () => {
     };
   };
 
+  // 내 미션 인증 여부 확인
+  const getMySubmissionStatus = (dayIndex: number) => {
+    if (challenge.status !== 'in-progress' && challenge.status !== 'completed') {
+      return false;
+    }
+    
+    const mission = challenge.dailyMissions[dayIndex];
+    if (!mission) return false;
+    
+    return mission.submissions.some(sub => sub.userId === currentUserId);
+  };
+
+  // 내 미션 인증 데이터 가져오기
+  const getMySubmissions = () => {
+    const mySubmissions: Array<{day: number, submission: any}> = [];
+    
+    challenge.dailyMissions.forEach((mission, index) => {
+      const mySubmission = mission.submissions.find(sub => sub.userId === currentUserId);
+      if (mySubmission) {
+        mySubmissions.push({ day: index + 1, submission: mySubmission });
+      }
+    });
+    
+    return mySubmissions;
+  };
+
   // 일차별 버튼 상태 및 색상 결정
   const getDayButtonStyle = (dayIndex: number) => {
     const { completed, total } = getMissionSuccessCount(dayIndex);
     const isToday = dayIndex === currentDay && challenge.status === 'in-progress';
     
     if (dayIndex > currentDay) {
-      // 1. 아직 활성화되지 않은 상태
+      // 1. 비활성화 상태
       return {
         bg: 'bg-gray-100',
         text: 'text-gray-400',
         border: ''
       };
-    } else if (isToday && completed === 0) {
-      // 2. 오늘이 해당 요일이지만 아무도 인증하지 않은 상태
+    } else if (completed === 0) {
+      // 2. 아무도 미션 성공 못함
       return {
         bg: 'bg-orange-100',
         text: 'text-orange-600',
-        border: 'ring-2 ring-orange-400'
+        border: isToday ? 'ring-2 ring-orange-400' : ''
       };
-    } else if (isToday && completed > 0 && completed < total) {
-      // 3. 오늘이 해당 요일이고, 일부가 인증한 상태
+    } else if (completed > 0 && completed < total) {
+      // 3. 참여자 일부 미션 성공
       return {
         bg: 'bg-blue-100',
         text: 'text-blue-600',
-        border: 'ring-2 ring-blue-400'
+        border: isToday ? 'ring-2 ring-blue-400' : ''
       };
-    } else if (isToday && completed === total) {
-      // 4. 오늘이 해당 요일이고, 전부 인증 완료한 상태
+    } else if (completed === total) {
+      // 4. 전원 미션 성공
       return {
-        bg: 'bg-green-100',
-        text: 'text-green-600',
-        border: 'ring-2 ring-green-400'
-      };
-    } else if (dayIndex < currentDay) {
-      // 완료된 일차
-      return {
-        bg: 'bg-green-600',
+        bg: 'bg-green-500',
         text: 'text-white',
-        border: ''
+        border: isToday ? 'ring-2 ring-green-400' : ''
       };
     } else {
-      // 기본 상태
       return {
         bg: 'bg-gray-100',
         text: 'text-gray-400',
@@ -156,6 +173,26 @@ const ChallengeDetail = () => {
     }
   };
 
+  // 날짜 포맷팅 함수
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  const getEndDate = () => {
+    if (challenge.endDate) return challenge.endDate;
+    if (challenge.startDate) {
+      const start = new Date(challenge.startDate);
+      const end = new Date(start);
+      end.setDate(start.getDate() + 6);
+      return end.toISOString().split('T')[0];
+    }
+    return '';
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white py-4 px-4 border-b border-gray-100">
@@ -181,7 +218,43 @@ const ChallengeDetail = () => {
       </header>
 
       <main className="max-w-4xl mx-auto px-4 py-8 space-y-6">
-        {/* 7일 진행도 */}
+        {/* 챌린지 정보 */}
+        <Card className="border border-gray-100 shadow-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="flex items-center gap-2 text-lg text-gray-900">
+              <Calendar size={20} className="text-blue-600" />
+              챌린지 정보
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                  <Calendar size={16} className="text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">시작일</p>
+                  <p className="font-semibold text-gray-900">
+                    {challenge.startDate ? formatDate(challenge.startDate) : '미정'}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                  <Calendar size={16} className="text-green-600" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">종료일</p>
+                  <p className="font-semibold text-gray-900">
+                    {getEndDate() ? formatDate(getEndDate()) : '미정'}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* 7일 챌린지 진행도 */}
         <Card className="border border-gray-100 shadow-sm">
           <CardHeader className="pb-4">
             <CardTitle className="flex items-center justify-between text-lg">
@@ -233,7 +306,78 @@ const ChallengeDetail = () => {
           </CardContent>
         </Card>
 
-        {/* 팀원 현황 */}
+        {/* 나의 진행도 */}
+        {(challenge.status === 'in-progress' || challenge.status === 'completed') && (
+          <Card className="border border-gray-100 shadow-sm">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-2 text-lg text-gray-900">
+                <Users size={20} className="text-purple-600" />
+                나의 진행도
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="space-y-4">
+                <div className="grid grid-cols-7 gap-2">
+                  {Array.from({ length: 7 }, (_, i) => {
+                    const hasSubmitted = getMySubmissionStatus(i);
+                    const isToday = i === currentDay && challenge.status === 'in-progress';
+                    
+                    return (
+                      <div key={i} className="text-center">
+                        <div
+                          className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mx-auto mb-2 ${
+                            hasSubmitted 
+                              ? 'bg-purple-500 text-white' 
+                              : i <= currentDay 
+                                ? 'bg-purple-100 text-purple-600' 
+                                : 'bg-gray-100 text-gray-400'
+                          } ${isToday ? 'ring-2 ring-purple-400' : ''}`}
+                        >
+                          {hasSubmitted ? '✓' : i + 1}
+                        </div>
+                        <span className="text-xs text-gray-500">{i + 1}일차</span>
+                      </div>
+                    );
+                  })}
+                </div>
+                
+                {/* 나의 미션 인증 목록 */}
+                {getMySubmissions().length > 0 && (
+                  <div className="mt-6 space-y-4">
+                    <h4 className="font-semibold text-gray-900">나의 미션 인증</h4>
+                    {getMySubmissions().map(({ day, submission }, index) => (
+                      <div key={index} className="border border-gray-100 rounded-lg p-4 bg-purple-50">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge variant="outline" className="text-purple-600 border-purple-200">
+                            {day}일차
+                          </Badge>
+                          <span className="text-sm text-gray-500">
+                            {new Date(submission.submittedAt).toLocaleString('ko-KR', {
+                              month: 'long',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </span>
+                        </div>
+                        {submission.imageUrl && (
+                          <img 
+                            src={submission.imageUrl} 
+                            alt={`${day}일차 미션`}
+                            className="w-full max-w-sm rounded-lg object-cover mb-3 border border-gray-200"
+                          />
+                        )}
+                        <p className="text-gray-700 bg-white p-3 rounded-lg">{submission.text}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* 함께하는 친구들 */}
         <Card className="border border-gray-100 shadow-sm">
           <CardHeader className="pb-4">
             <CardTitle className="text-lg text-gray-900">함께하는 친구들 ({challenge.participants.length}명)</CardTitle>
@@ -255,12 +399,14 @@ const ChallengeDetail = () => {
           </CardContent>
         </Card>
 
-        {/* 진행중 챌린지: 오늘의 미션 */}
-        {challenge.status === 'in-progress' && challenge.dailyMissions[currentDay] && (
+        {/* 진행중 챌린지: 오늘의 미션 인증하기 */}
+        {challenge.status === 'in-progress' && 
+         challenge.dailyMissions[currentDay] && 
+         !getMySubmissionStatus(currentDay) && (
           <Card className="border border-gray-100 shadow-sm">
             <CardHeader className="pb-4">
               <CardTitle className="text-lg text-blue-600">
-                오늘의 미션 ({currentDay + 1}일차)
+                오늘의 미션 인증하기 ({currentDay + 1}일차)
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-0 space-y-4">
