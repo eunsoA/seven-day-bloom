@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { mockChallenges, mockUsers, currentUserId, reactionTypes } from '../data/mockData';
@@ -198,6 +199,7 @@ const ChallengeDetail = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Header */}
       <header className="bg-white py-4 px-4 border-b border-gray-100">
         <div className="max-w-4xl mx-auto flex items-center gap-4">
           <Button 
@@ -271,17 +273,9 @@ const ChallengeDetail = () => {
           </CardHeader>
           <CardContent className="pt-0">
             <div className="space-y-6">
-              <div className="relative pt-8 pb-4">
-                {/* Progress Bar */}
-                <div className="relative w-full h-4 bg-gray-200 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-gradient-to-r from-blue-400 via-purple-500 to-green-500 transition-all duration-1000 ease-out rounded-full"
-                    style={{ width: `${progressPercentage}%` }}
-                  />
-                </div>
-                
-                {/* Day Buttons positioned above the progress bar */}
-                <div className="absolute -top-2 left-0 right-0 flex justify-between items-center">
+              <div className="relative py-8">
+                {/* Day Buttons positioned above */}
+                <div className="flex justify-between items-center mb-6">
                   {Array.from({ length: 7 }, (_, i) => {
                     const { completed, total } = getMissionSuccessCount(i);
                     const buttonStyle = getDayButtonStyle(i);
@@ -308,6 +302,16 @@ const ChallengeDetail = () => {
                       </div>
                     );
                   })}
+                </div>
+
+                {/* Progress Bar positioned at button center */}
+                <div className="absolute top-1/2 left-0 right-0 transform -translate-y-1/2">
+                  <div className="relative w-full h-4 bg-gray-200 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-gradient-to-r from-blue-400 via-purple-500 to-green-500 transition-all duration-1000 ease-out rounded-full"
+                      style={{ width: `${progressPercentage}%` }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
