@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { mockChallenges, mockUsers, currentUserId, reactionTypes } from '../data/mockData';
 import { Button } from '@/components/ui/button';
@@ -17,7 +17,6 @@ const ChallengeDetail = () => {
   const [missionText, setMissionText] = useState('');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
-  const [progressAnimation, setProgressAnimation] = useState(0);
   
   const challenge = mockChallenges.find(c => c.id === id);
   const currentUser = mockUsers.find(u => u.id === currentUserId);
@@ -38,14 +37,6 @@ const ChallengeDetail = () => {
   };
 
   const { currentDay, progressPercentage } = getProgressInfo();
-
-  // 프로그래스바 애니메이션 효과
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setProgressAnimation(progressPercentage);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [progressPercentage]);
 
   // 각 일차별 미션 성공 인원 계산
   const getMissionSuccessCount = (dayIndex: number) => {
@@ -98,41 +89,36 @@ const ChallengeDetail = () => {
     if (dayIndex > currentDay) {
       // 1. 비활성화 상태
       return {
-        bg: 'bg-gray-200',
+        bg: 'bg-gray-100',
         text: 'text-gray-400',
-        border: '',
-        shadow: ''
+        border: ''
       };
     } else if (completed === 0) {
       // 2. 아무도 미션 성공 못함
       return {
-        bg: 'bg-orange-200',
-        text: 'text-orange-700',
-        border: isToday ? 'ring-3 ring-orange-400' : '',
-        shadow: 'shadow-sm'
+        bg: 'bg-orange-100',
+        text: 'text-orange-600',
+        border: isToday ? 'ring-2 ring-orange-400' : ''
       };
     } else if (completed > 0 && completed < total) {
       // 3. 참여자 일부 미션 성공
       return {
-        bg: 'bg-blue-200',
-        text: 'text-blue-700',
-        border: isToday ? 'ring-3 ring-blue-400' : '',
-        shadow: 'shadow-sm'
+        bg: 'bg-blue-100',
+        text: 'text-blue-600',
+        border: isToday ? 'ring-2 ring-blue-400' : ''
       };
     } else if (completed === total) {
       // 4. 전원 미션 성공
       return {
         bg: 'bg-green-500',
         text: 'text-white',
-        border: isToday ? 'ring-3 ring-green-400' : '',
-        shadow: 'shadow-md'
+        border: isToday ? 'ring-2 ring-green-400' : ''
       };
     } else {
       return {
-        bg: 'bg-gray-200',
+        bg: 'bg-gray-100',
         text: 'text-gray-400',
-        border: '',
-        shadow: ''
+        border: ''
       };
     }
   };
@@ -281,61 +267,52 @@ const ChallengeDetail = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="space-y-6">
-              {/* 진행도 바와 일차 버튼이 결합된 디자인 */}
-              <div className="relative px-4">
-                {/* 배경 프로그래스 바 */}
-                <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden">
+            <div className="space-y-4">
+              <div className="relative">
+                <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-gradient-to-r from-blue-400 via-purple-500 to-green-500 transition-all duration-1000 ease-out rounded-full"
-                    style={{ width: `${progressAnimation}%` }}
+                    className="h-full bg-gradient-to-r from-blue-400 via-purple-500 to-green-500 transition-all duration-500 ease-out"
+                    style={{ width: `${progressPercentage}%` }}
                   />
                 </div>
-                
-                {/* 일차별 버튼들 */}
-                <div className="absolute -top-4 left-0 right-0 flex justify-between px-4">
-                  {Array.from({ length: 7 }, (_, i) => {
-                    const { completed, total } = getMissionSuccessCount(i);
-                    const buttonStyle = getDayButtonStyle(i);
-                    const isClickable = i <= currentDay || challenge.status === 'completed';
-                    const position = (i / 6) * 100; // 0% ~ 100% 위치
-                    
-                    return (
-                      <div 
-                        key={i} 
-                        className="relative flex flex-col items-center"
-                        style={{ left: `${position}%`, transform: 'translateX(-50%)' }}
+              </div>
+              <div className="grid grid-cols-7 gap-2">
+                {Array.from({ length: 7 }, (_, i) => {
+                  const { completed, total } = getMissionSuccessCount(i);
+                  const buttonStyle = getDayButtonStyle(i);
+                  const isClickable = i <= currentDay || challenge.status === 'completed';
+                  
+                  return (
+                    <div key={i} className="text-center">
+                      <button
+                        onClick={() => handleDayClick(i)}
+                        disabled={!isClickable}
+                        className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mx-auto mb-2 transition-all duration-200 ${
+                          buttonStyle.bg
+                        } ${buttonStyle.text} ${buttonStyle.border} ${
+                          isClickable ? 'hover:scale-105 cursor-pointer' : 'cursor-not-allowed'
+                        } ${selectedDay === i ? 'ring-2 ring-offset-2 ring-blue-500' : ''}`}
                       >
-                        <button
-                          onClick={() => handleDayClick(i)}
-                          disabled={!isClickable}
-                          className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-200 ${
-                            buttonStyle.bg
-                          } ${buttonStyle.text} ${buttonStyle.border} ${buttonStyle.shadow} ${
-                            isClickable ? 'hover:scale-110 cursor-pointer' : 'cursor-not-allowed'
-                          } ${selectedDay === i ? 'ring-2 ring-offset-2 ring-blue-500' : ''}`}
-                        >
-                          {i + 1}
-                        </button>
-                        <span className="text-xs text-gray-500 mt-2 text-center">
-                          {challenge.status === 'recruiting' ? `${i + 1}일차` : `(${completed}/${total})`}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
+                        {i + 1}
+                      </button>
+                      <span className="text-xs text-gray-500">
+                        {challenge.status === 'recruiting' ? `${i + 1}일차` : `(${completed}/${total})`}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* 나의 인증 */}
+        {/* 나의 진행도 */}
         {(challenge.status === 'in-progress' || challenge.status === 'completed') && (
           <Card className="border border-gray-100 shadow-sm">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2 text-lg text-gray-900">
                 <Users size={20} className="text-purple-600" />
-                나의 인증
+                나의 진행도
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-0">
@@ -348,13 +325,13 @@ const ChallengeDetail = () => {
                     return (
                       <div key={i} className="text-center">
                         <div
-                          className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mx-auto mb-2 transition-all duration-200 ${
+                          className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mx-auto mb-2 ${
                             hasSubmitted 
-                              ? 'bg-purple-500 text-white shadow-md' 
+                              ? 'bg-purple-500 text-white' 
                               : i <= currentDay 
-                                ? 'bg-purple-100 text-purple-600 shadow-sm' 
+                                ? 'bg-purple-100 text-purple-600' 
                                 : 'bg-gray-100 text-gray-400'
-                          } ${isToday ? 'ring-3 ring-purple-400' : ''}`}
+                          } ${isToday ? 'ring-2 ring-purple-400' : ''}`}
                         >
                           {hasSubmitted ? '✓' : i + 1}
                         </div>
