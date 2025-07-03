@@ -271,58 +271,56 @@ const ChallengeDetail = () => {
           </CardHeader>
           <CardContent className="pt-0">
             <div className="space-y-6">
-              <div className="relative">
-                <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden relative">
+              <div className="relative pt-8 pb-4">
+                {/* Progress Bar */}
+                <div className="relative w-full h-4 bg-gray-200 rounded-full overflow-hidden">
                   <div 
                     className="h-full bg-gradient-to-r from-blue-400 via-purple-500 to-green-500 transition-all duration-1000 ease-out rounded-full"
                     style={{ width: `${progressPercentage}%` }}
                   />
-                  <div className="absolute inset-0 flex justify-between items-center px-2">
-                    {Array.from({ length: 7 }, (_, i) => {
-                      const { completed, total } = getMissionSuccessCount(i);
-                      const buttonStyle = getDayButtonStyle(i);
-                      const isClickable = i <= currentDay || challenge.status === 'completed';
-                      const leftPosition = (i / 6) * 100;
-                      
-                      return (
-                        <div 
-                          key={i} 
-                          className="absolute transform -translate-x-1/2"
-                          style={{ left: `${leftPosition}%` }}
+                </div>
+                
+                {/* Day Buttons positioned above the progress bar */}
+                <div className="absolute -top-2 left-0 right-0 flex justify-between items-center">
+                  {Array.from({ length: 7 }, (_, i) => {
+                    const { completed, total } = getMissionSuccessCount(i);
+                    const buttonStyle = getDayButtonStyle(i);
+                    const isClickable = i <= currentDay || challenge.status === 'completed';
+                    
+                    return (
+                      <div key={i} className="flex flex-col items-center">
+                        <button
+                          onClick={() => handleDayClick(i)}
+                          disabled={!isClickable}
+                          className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-200 ${
+                            buttonStyle.bg
+                          } ${buttonStyle.text} ${buttonStyle.border} ${
+                            isClickable ? 'hover:scale-110 cursor-pointer shadow-lg' : 'cursor-not-allowed'
+                          }`}
                         >
-                          <button
-                            onClick={() => handleDayClick(i)}
-                            disabled={!isClickable}
-                            className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-200 ${
-                              buttonStyle.bg
-                            } ${buttonStyle.text} ${buttonStyle.border} ${
-                              isClickable ? 'hover:scale-110 cursor-pointer shadow-lg' : 'cursor-not-allowed'
-                            }`}
-                          >
-                            {i + 1}
-                          </button>
-                          <div className="text-center mt-2">
-                            <span className="text-xs text-gray-500">
-                              {challenge.status === 'recruiting' ? `${i + 1}일차` : `(${completed}/${total})`}
-                            </span>
-                          </div>
+                          {i + 1}
+                        </button>
+                        <div className="text-center mt-2">
+                          <span className="text-xs text-gray-500">
+                            {challenge.status === 'recruiting' ? `${i + 1}일차` : `(${completed}/${total})`}
+                          </span>
                         </div>
-                      );
-                    })}
-                  </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* 나의 진행도 */}
+        {/* 나의 인증 */}
         {(challenge.status === 'in-progress' || challenge.status === 'completed') && (
           <Card className="border border-gray-100 shadow-sm">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2 text-lg text-gray-900">
                 <Users size={20} className="text-purple-600" />
-                나의 진행도
+                나의 인증
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-0">
