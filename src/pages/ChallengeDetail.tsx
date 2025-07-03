@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { mockChallenges, mockUsers, currentUserId, reactionTypes } from '../data/mockData';
@@ -8,6 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArrowLeft, Upload, Send, Camera, Calendar, Users } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
@@ -17,6 +18,7 @@ const ChallengeDetail = () => {
   const [missionText, setMissionText] = useState('');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   const challenge = mockChallenges.find(c => c.id === id);
   const currentUser = mockUsers.find(u => u.id === currentUserId);
@@ -169,7 +171,8 @@ const ChallengeDetail = () => {
 
   const handleDayClick = (dayIndex: number) => {
     if (dayIndex <= currentDay || challenge.status === 'completed') {
-      setSelectedDay(selectedDay === dayIndex ? null : dayIndex);
+      setSelectedDay(dayIndex);
+      setIsModalOpen(true);
     }
   };
 
@@ -267,40 +270,47 @@ const ChallengeDetail = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div className="relative">
-                <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden relative">
                   <div 
-                    className="h-full bg-gradient-to-r from-blue-400 via-purple-500 to-green-500 transition-all duration-500 ease-out"
+                    className="h-full bg-gradient-to-r from-blue-400 via-purple-500 to-green-500 transition-all duration-1000 ease-out rounded-full"
                     style={{ width: `${progressPercentage}%` }}
                   />
+                  <div className="absolute inset-0 flex justify-between items-center px-2">
+                    {Array.from({ length: 7 }, (_, i) => {
+                      const { completed, total } = getMissionSuccessCount(i);
+                      const buttonStyle = getDayButtonStyle(i);
+                      const isClickable = i <= currentDay || challenge.status === 'completed';
+                      const leftPosition = (i / 6) * 100;
+                      
+                      return (
+                        <div 
+                          key={i} 
+                          className="absolute transform -translate-x-1/2"
+                          style={{ left: `${leftPosition}%` }}
+                        >
+                          <button
+                            onClick={() => handleDayClick(i)}
+                            disabled={!isClickable}
+                            className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-200 ${
+                              buttonStyle.bg
+                            } ${buttonStyle.text} ${buttonStyle.border} ${
+                              isClickable ? 'hover:scale-110 cursor-pointer shadow-lg' : 'cursor-not-allowed'
+                            }`}
+                          >
+                            {i + 1}
+                          </button>
+                          <div className="text-center mt-2">
+                            <span className="text-xs text-gray-500">
+                              {challenge.status === 'recruiting' ? `${i + 1}일차` : `(${completed}/${total})`}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-              <div className="grid grid-cols-7 gap-2">
-                {Array.from({ length: 7 }, (_, i) => {
-                  const { completed, total } = getMissionSuccessCount(i);
-                  const buttonStyle = getDayButtonStyle(i);
-                  const isClickable = i <= currentDay || challenge.status === 'completed';
-                  
-                  return (
-                    <div key={i} className="text-center">
-                      <button
-                        onClick={() => handleDayClick(i)}
-                        disabled={!isClickable}
-                        className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold mx-auto mb-2 transition-all duration-200 ${
-                          buttonStyle.bg
-                        } ${buttonStyle.text} ${buttonStyle.border} ${
-                          isClickable ? 'hover:scale-105 cursor-pointer' : 'cursor-not-allowed'
-                        } ${selectedDay === i ? 'ring-2 ring-offset-2 ring-blue-500' : ''}`}
-                      >
-                        {i + 1}
-                      </button>
-                      <span className="text-xs text-gray-500">
-                        {challenge.status === 'recruiting' ? `${i + 1}일차` : `(${completed}/${total})`}
-                      </span>
-                    </div>
-                  );
-                })}
               </div>
             </div>
           </CardContent>
@@ -475,88 +485,129 @@ const ChallengeDetail = () => {
           </Card>
         )}
 
-        {/* 선택된 일차의 미션 인증 보기 */}
-        {selectedDay !== null && (challenge.status === 'in-progress' || challenge.status === 'completed') && (
-          <>
-            {(() => {
-              const mission = challenge.dailyMissions[selectedDay];
-              if (!mission || mission.submissions.length === 0) return null;
-              
-              return (
-                <Card className="border border-gray-100 shadow-sm">
-                  <CardHeader className="pb-4">
-                    <CardTitle className="text-lg text-gray-900">
-                      {selectedDay + 1}일차 미션 인증 ({mission.submissions.length}명 완료)
-                    </CardTitle>
-                    <p className="text-sm text-gray-600 mt-1">{mission.title}</p>
-                  </CardHeader>
-                  <CardContent className="pt-0 space-y-6">
-                    {mission.submissions.map((submission, index) => {
-                      const user = mockUsers.find(u => u.id === submission.userId);
-                      return (
-                        <div key={index} className="border border-gray-100 rounded-lg p-5 space-y-4 bg-white">
-                          <div className="flex items-center gap-3">
-                            <Avatar className="w-10 h-10">
-                              <AvatarFallback className="text-lg">{user?.profileImage}</AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <p className="font-semibold text-gray-900">{user?.name}</p>
-                              <p className="text-sm text-gray-500">
-                                {new Date(submission.submittedAt).toLocaleString('ko-KR', {
-                                  month: 'long',
-                                  day: 'numeric',
-                                  hour: '2-digit',
-                                  minute: '2-digit'
-                                })}
-                              </p>
+      </main>
+
+      {/* 일차별 미션 인증 모달 */}
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold">
+              {selectedDay !== null ? `${selectedDay + 1}일차 미션 인증` : '미션 인증'}
+            </DialogTitle>
+          </DialogHeader>
+          
+          {selectedDay !== null && challenge.dailyMissions[selectedDay] && (
+            <div className="space-y-4">
+              <div className="p-4 bg-blue-50 rounded-lg border border-blue-100">
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  {challenge.dailyMissions[selectedDay].title}
+                </h3>
+                <p className="text-gray-700 text-sm">
+                  {challenge.dailyMissions[selectedDay].description}
+                </p>
+              </div>
+
+              <Tabs defaultValue={challenge.participants[0]?.id} className="w-full">
+                <TabsList className="grid w-full grid-cols-3">
+                  {challenge.participants.map((participant) => (
+                    <TabsTrigger key={participant.id} value={participant.id} className="flex items-center gap-2">
+                      <Avatar className="w-6 h-6">
+                        <AvatarFallback className="text-xs">{participant.profileImage}</AvatarFallback>
+                      </Avatar>
+                      <span className="text-sm">{participant.name}</span>
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+
+                {challenge.participants.map((participant) => {
+                  const submission = challenge.dailyMissions[selectedDay]?.submissions.find(
+                    sub => sub.userId === participant.id
+                  );
+
+                  return (
+                    <TabsContent key={participant.id} value={participant.id} className="mt-4">
+                      <div className="space-y-4">
+                        {submission ? (
+                          <div className="border border-gray-100 rounded-lg p-5 space-y-4 bg-white">
+                            <div className="flex items-center gap-3">
+                              <Avatar className="w-10 h-10">
+                                <AvatarFallback className="text-lg">{participant.profileImage}</AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <p className="font-semibold text-gray-900">{participant.name}</p>
+                                <p className="text-sm text-gray-500">
+                                  {new Date(submission.submittedAt).toLocaleString('ko-KR', {
+                                    month: 'long',
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                  })}
+                                </p>
+                              </div>
+                              <Badge className="ml-auto bg-green-100 text-green-700">인증 완료</Badge>
                             </div>
-                          </div>
-                          
-                          {submission.imageUrl && (
-                            <div className="rounded-lg overflow-hidden">
-                              <img 
-                                src={submission.imageUrl} 
-                                alt="미션 인증" 
-                                className="w-full max-w-md rounded-lg object-cover border border-gray-100"
-                              />
-                            </div>
-                          )}
-                          
-                          <p className="text-gray-800 leading-relaxed bg-gray-50 p-3 rounded-lg">{submission.text}</p>
-                          
-                          <div className="flex flex-wrap gap-2 pt-3 border-t border-gray-100">
-                            {reactionTypes.map((reaction) => (
-                              <Button
-                                key={reaction.id}
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleReaction(index, reaction.id)}
-                                className="text-sm hover:bg-blue-50 hover:border-blue-200 border-gray-200 text-gray-700"
-                              >
-                                {reaction.emoji} {reaction.label}
-                              </Button>
-                            ))}
-                          </div>
-                          
-                          {submission.reactions.length > 0 && (
-                            <div className="flex flex-wrap gap-2 mt-3">
-                              {submission.reactions.map((reaction, i) => (
-                                <Badge key={i} variant="secondary" className="text-sm bg-blue-50 text-blue-700 border-blue-100">
-                                  {reactionTypes.find(r => r.id === reaction.type)?.emoji} {reaction.message}
-                                </Badge>
+                            
+                            {submission.imageUrl && (
+                              <div className="rounded-lg overflow-hidden">
+                                <img 
+                                  src={submission.imageUrl} 
+                                  alt="미션 인증" 
+                                  className="w-full max-w-md rounded-lg object-cover border border-gray-100"
+                                />
+                              </div>
+                            )}
+                            
+                            <p className="text-gray-800 leading-relaxed bg-gray-50 p-3 rounded-lg">{submission.text}</p>
+                            
+                            <div className="flex flex-wrap gap-2 pt-3 border-t border-gray-100">
+                              {reactionTypes.map((reaction) => (
+                                <Button
+                                  key={reaction.id}
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleReaction(0, reaction.id)}
+                                  className="text-sm hover:bg-blue-50 hover:border-blue-200 border-gray-200 text-gray-700"
+                                >
+                                  {reaction.emoji} {reaction.label}
+                                </Button>
                               ))}
                             </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </CardContent>
-                </Card>
-              );
-            })()}
-          </>
-        )}
-      </main>
+                            
+                            {submission.reactions.length > 0 && (
+                              <div className="flex flex-wrap gap-2 mt-3">
+                                {submission.reactions.map((reaction, i) => (
+                                  <Badge key={i} variant="secondary" className="text-sm bg-blue-50 text-blue-700 border-blue-100">
+                                    {reactionTypes.find(r => r.id === reaction.type)?.emoji} {reaction.message}
+                                  </Badge>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="border border-gray-200 rounded-lg p-8 text-center bg-gray-50">
+                            <div className="flex flex-col items-center gap-3">
+                              <Avatar className="w-16 h-16">
+                                <AvatarFallback className="text-2xl">{participant.profileImage}</AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <p className="font-semibold text-gray-900">{participant.name}</p>
+                                <Badge variant="outline" className="mt-2 text-orange-600 border-orange-200">
+                                  미인증
+                                </Badge>
+                              </div>
+                              <p className="text-gray-500 text-sm mt-2">아직 미션을 인증하지 않았습니다.</p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </TabsContent>
+                  );
+                })}
+              </Tabs>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
